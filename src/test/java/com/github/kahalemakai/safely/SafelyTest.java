@@ -80,10 +80,13 @@ public class SafelyTest {
     @Test
     public void silently() throws Exception {
         val counter = new AtomicInteger();
-        Safely.silenty(() -> {
+        Runnable r = () -> {
             counter.getAndIncrement();
             throw new IllegalArgumentException();
-        });
+        };
+        Safely.silenty(r).run();
         assertEquals(1, counter.get());
+        Safely.runSilently(r);
+        assertEquals(2, counter.get());
     }
 }

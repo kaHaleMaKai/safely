@@ -60,5 +60,9 @@ public class Safely {
         };
     }
 
+    public static void runSilently(Runnable r) {
+        silenty(r).run();
+    }
+
 }
 
