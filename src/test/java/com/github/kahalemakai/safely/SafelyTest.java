@@ -84,7 +84,7 @@ public class SafelyTest {
             counter.getAndIncrement();
             throw new IllegalArgumentException();
         };
-        Safely.silenty(r).run();
+        Safely.silently(r).run();
         assertEquals(1, counter.get());
         Safely.runSilently(r);
         assertEquals(2, counter.get());
