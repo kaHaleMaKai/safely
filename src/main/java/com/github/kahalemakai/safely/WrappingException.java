@@ -12,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
  * A wrapper exception that delegates most methods
  * to the wrapped exception.
  * <p>
- * Only a single constructor is offered, as {@code WrappedException}
+ * Only a single constructor is offered, as {@code WrappingException}
  * should only be used as safety means to encapsulate
  * other (potentially checked) exceptions; thus only a
  * {@link Throwable throwable cause} is needed to construct
@@ -20,7 +20,7 @@ import java.lang.reflect.InvocationTargetException;
  * <p>
  * Additionally, it offers a few convenience methods.
  */
-public final class WrappedException extends RuntimeException {
+public final class WrappingException extends RuntimeException {
     private final boolean causedByInterruptedException;
     @Getter
     private Throwable wrappedException;
@@ -29,7 +29,7 @@ public final class WrappedException extends RuntimeException {
      * Construct a new instance.
      * @param cause the cause
      */
-    public WrappedException(Throwable cause) {
+    public WrappingException(Throwable cause) {
         super(cause);
         this.wrappedException = cause;
         this.causedByInterruptedException = (cause instanceof InterruptedException);

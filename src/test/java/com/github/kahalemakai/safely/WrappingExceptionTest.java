@@ -8,13 +8,13 @@ import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 
-public class WrappedExceptionTest {
+public class WrappingExceptionTest {
 
     @Test
     public void wraps() throws Exception {
-        val ex1 = new WrappedException(new InterruptedException());
+        val ex1 = new WrappingException(new InterruptedException());
         assertEquals(InterruptedException.class, ex1.getWrappedException().getClass());
-        val ex2 = new WrappedException(new IOException());
+        val ex2 = new WrappingException(new IOException());
         assertEquals(IOException.class, ex2.getWrappedException().getClass());
         assertTrue(ex1.wraps(InterruptedException.class));
         assertTrue(ex2.wraps(IOException.class));
@@ -22,11 +22,11 @@ public class WrappedExceptionTest {
 
     @Test
     public void interrupted() throws Exception {
-        val ex1 = new WrappedException(new IOException());
+        val ex1 = new WrappingException(new IOException());
         assertFalse(Thread.currentThread().isInterrupted());
         assertFalse(ex1.interruptIfNecessary());
         assertFalse(Thread.currentThread().isInterrupted());
-        val ex2 = new WrappedException(new InterruptedException());
+        val ex2 = new WrappingException(new InterruptedException());
         assertFalse(Thread.currentThread().isInterrupted());
         assertTrue(ex2.interruptIfNecessary());
         assertTrue(Thread.currentThread().isInterrupted());
@@ -37,7 +37,7 @@ public class WrappedExceptionTest {
     public void delegates() throws Exception {
         val runEx = new RuntimeException();
         val ioEx = new IOException("io exception", runEx);
-        val ex = new WrappedException(ioEx);
+        val ex = new WrappingException(ioEx);
         assertEquals(ioEx.getMessage(), ex.getMessage());
         assertArrayEquals(ioEx.getStackTrace(), ex.getStackTrace());
         assertEquals(ioEx.getLocalizedMessage(), ex.getLocalizedMessage());
@@ -46,7 +46,7 @@ public class WrappedExceptionTest {
 
     @Test
     public void rethrowableStringAndException() throws Exception {
-        val ex = new WrappedException(new IOException("io msg", new IllegalAccessException()));
+        val ex = new WrappingException(new IOException("io msg", new IllegalAccessException()));
         val msg = "this is really bad";
         val ex1 = ex.rethrowable(msg, NoSuchElementException.class);
         assertEquals(NoSuchElementException.class, ex1.getClass());
@@ -58,14 +58,14 @@ public class WrappedExceptionTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void rethrowableStringAndExceptionThrows() throws Exception {
-        val ex = new WrappedException(new RuntimeException());
+        val ex = new WrappingException(new RuntimeException());
         ex.rethrowable("this is really, really bad!", BadException.class);
     }
 
 
     @Test
     public void rethrowableExceptionOnly() throws Exception {
-        val ex = new WrappedException(new IOException("io msg", new IllegalAccessException()));
+        val ex = new WrappingException(new IOException("io msg", new IllegalAccessException()));
         val ex1 = ex.rethrowable(NoSuchElementException.class);
         assertEquals(NoSuchElementException.class, ex1.getClass());
         assertEquals(IOException.class, ex1.getCause().getClass());
@@ -75,7 +75,7 @@ public class WrappedExceptionTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void rethrowableExceptionOnlyThrows() throws Exception {
-        val ex = new WrappedException(new RuntimeException());
+        val ex = new WrappingException(new RuntimeException());
         ex.rethrowable(BadException.class);
     }
 

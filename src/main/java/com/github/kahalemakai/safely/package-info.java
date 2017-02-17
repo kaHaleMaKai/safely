@@ -12,7 +12,7 @@
  *         that does not throw checked exceptions
  *     </li>
  *     <li>
- *         {@link com.github.kahalemakai.safely.WrappedException WrappedException} –
+ *         {@link com.github.kahalemakai.safely.WrappingException WrappingException} –
  *         an exception that easily wraps around (probably checked) exceptions
  *     </li>
  * </ul>

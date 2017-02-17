@@ -17,7 +17,7 @@ public final class Safely {
 
     /**
      * Wrap any {@link Throwable throwable} a {@link Runnable runnable} might throw
-     * into a {@link WrappedException WrappedException}.
+     * into a {@link WrappingException WrappingException}.
      * @param r the {@code Runnable} to wrap
      * @return the wrapped {@code Runnable}
      */
@@ -27,14 +27,14 @@ public final class Safely {
                 r.run();
             }
             catch (Throwable e) {
-                throw new WrappedException(e);
+                throw new WrappingException(e);
             }
         };
     }
 
     /**
      * Wrap a {@link Callable callable} such that it only throws
-     * {@link WrappedException WrappedExceptions} on {@link Callable#call()}.
+     * {@link WrappingException WrappedExceptions} on {@link Callable#call()}.
      * @param callable the {@code Callable} to wrap
      * @param <T> type of return value of the wrapped {@code Callable}
      * @return the wrapped {@code Callable}
@@ -45,7 +45,7 @@ public final class Safely {
                 return callable.call();
             }
             catch (Throwable e) {
-                throw new WrappedException(e);
+                throw new WrappingException(e);
             }
         };
     }
@@ -64,7 +64,7 @@ public final class Safely {
 
     /**
      * Wrap a {@link Callable callable} such that all checked exceptions are wrapped
-     * into {@link WrappedException WrappedExceptions} when applying {@link Callable#call()}.
+     * into {@link WrappingException WrappedExceptions} when applying {@link Callable#call()}.
      * @param callable the {@code Callable} to wrap
      * @param <T> type of return value of the wrapped {@code Callable}
      * @return the wrapped {@code Callable}
@@ -78,7 +78,7 @@ public final class Safely {
                 if (e instanceof RuntimeException) {
                     throw (RuntimeException) e;
                 }
-                throw new WrappedException(e);
+                throw new WrappingException(e);
             }
         };
     }

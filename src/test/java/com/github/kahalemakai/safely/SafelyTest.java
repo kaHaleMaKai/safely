@@ -25,7 +25,7 @@ public class SafelyTest {
             Safely.wrapRunnable(r2).run();
             throw new AssertionError("didn't catch an exception");
             
-        } catch (WrappedException e) {
+        } catch (WrappingException e) {
             assertEquals(2, counter.get());
             assertEquals("hello", e.getMessage());
         }
@@ -36,7 +36,7 @@ public class SafelyTest {
         Safely.uncheckedCallable(() -> { throw new IllegalArgumentException();}).call();
     }
 
-    @Test(expected = WrappedException.class)
+    @Test(expected = WrappingException.class)
     public void callUncheckedThrowsWrappedException() throws Exception {
         Safely.callUnchecked(() -> { throw new IOException();});
     }
@@ -46,7 +46,7 @@ public class SafelyTest {
         Safely.callUnchecked(() -> { throw new IllegalArgumentException();});
     }
 
-    @Test(expected = WrappedException.class)
+    @Test(expected = WrappingException.class)
     public void unckechedCallableThrowsWrappedException() throws Exception {
         Safely.uncheckedCallable(() -> { throw new IOException();}).call();
     }
@@ -65,14 +65,14 @@ public class SafelyTest {
             s2.call();
             throw new AssertionError("didn't catch an exception");
         }
-        catch (WrappedException e) {
+        catch (WrappingException e) {
             assertEquals("your luck", e.getMessage());
         }
         try {
             Safely.call(c2);
             throw new AssertionError("didn't catch an exception");
         }
-        catch (WrappedException e) {
+        catch (WrappingException e) {
             assertEquals("your luck", e.getMessage());
         }
     }
