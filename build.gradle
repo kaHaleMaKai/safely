@@ -11,7 +11,7 @@ plugins {
 
 def license = "Apache-2.0"
 version '1.0.0-RC1'
-group = rootProject.defaultGroup
+group = 'com.github.kahalemakai'
 
 publishing {
     publications {
@@ -112,16 +112,16 @@ task wrapper(type: Wrapper) {
 }
 
 bintray {
-    user = rootProject.hasProperty("bintrayUser") ? bintrayUser : ""
-    key = rootProject.hasProperty("bintrayApiKey") ? bintrayApiKey : ""
+    user = var("bintrayUser", "")
+    key = var("bintrayApiKey", "")
     publications = [rootProject.name]
     pkg {
         repo = 'maven'
         name = rootProject.name
         licenses = [license]
-        vcsUrl = "${rootProject.github}/${rootProject.githubUsername}/${rootProject.name}"
+        vcsUrl = var("githubUrl")+"/"+var("githubUsername", "")+"/${rootProject.name}"
 
-        githubRepo = "${rootProject.githubUsername}/${rootProject.name}"
+        githubRepo = var("githubUsername", "") +"/${rootProject.name}"
         githubReleaseNotesFile = 'README.md'
 
         publicDownloadNumbers = true
@@ -133,8 +133,13 @@ bintray {
 
             gpg {
                 sign = true
-                passphrase = hasProperty("gpgPassPhrase") ? gpgPassPhrase : ""
+                passphrase = var("gpgPassPhrase", "")
             }
         }
     }
+}
+
+def var(String name, defaultValue = null) {
+    def val = rootProject.findProperty(name)
+    return val == null ? defaultValue : null
 }
