@@ -4,7 +4,7 @@ plugins {
     id 'maven'
     id 'maven-publish'
     id 'idea'
-    id "io.spring.dependency-management" version "1.0.0.RC2"
+    id "io.spring.dependency-management" version "1.0.0.RELEASE"
     id 'jacoco'
     id "com.jfrog.bintray" version "1.7.3"
 }
@@ -37,10 +37,8 @@ repositories {
 }
 
 dependencyManagement {
-    compile {
-        dependencies {
-            dependency 'org.projectlombok:lombok:1.16.12'
-        }
+    dependencies {
+        dependency 'org.projectlombok:lombok:1.16.12'
     }
 }
 
