@@ -141,5 +141,5 @@ bintray {
 
 def var(String name, defaultValue = null) {
     def val = rootProject.findProperty(name)
-    return val == null ? defaultValue : null
+    return val == null ? defaultValue : val
 }
