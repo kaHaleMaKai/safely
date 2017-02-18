@@ -2,13 +2,29 @@ plugins {
     id 'java'
     id 'build-announcements'
     id 'maven'
+    id 'maven-publish'
     id 'idea'
     id "io.spring.dependency-management" version "1.0.0.RC2"
     id 'jacoco'
+    id "com.jfrog.bintray" version "1.7.3"
 }
 
+def license = "Apache-2.0"
 version '1.0.0-RC1'
-group = 'com.github.kahalemakai'
+group = rootProject.defaultGroup
+
+publishing {
+    publications {
+        "safely"(MavenPublication) {
+            from components.java
+            artifact javadocJar
+            artifact sourcesJar
+            groupId rootProject.group
+            artifactId rootProject.name
+            version rootProject.version
+        }
+    }
+}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -93,4 +109,32 @@ task cleanTests(group: "verification") {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '3.3'
+}
+
+bintray {
+    user = rootProject.hasProperty("bintrayUser") ? bintrayUser : ""
+    key = rootProject.hasProperty("bintrayApiKey") ? bintrayApiKey : ""
+    publications = [rootProject.name]
+    pkg {
+        repo = 'maven'
+        name = rootProject.name
+        licenses = [license]
+        vcsUrl = "${rootProject.github}/${rootProject.githubUsername}/${rootProject.name}"
+
+        githubRepo = "${rootProject.githubUsername}/${rootProject.name}"
+        githubReleaseNotesFile = 'README.md'
+
+        publicDownloadNumbers = true
+
+        version {
+            name = rootProject.version
+            released = new Date()
+            vcsTag = rootProject.version
+
+            gpg {
+                sign = true
+                passphrase = hasProperty("gpgPassPhrase") ? gpgPassPhrase : ""
+            }
+        }
+    }
 }
